@@ -20,7 +20,8 @@ Purpose:  This project continues developing Project3.
 
  3) add 2 new UDTs that use only the types you copied above as member variables.
 
- 4) add 2 member functions that use your member variables to each of these new UDTs
+ 4) add 2 member functions to each of these new UDTs.
+    these member functions should use your member variables
 
  5) Add constructors and destructors to these 2 new types that do stuff.  
         maybe print out the name of the class being destructed, or call a member function of one of the members.  be creative
@@ -60,6 +61,8 @@ struct Guitar
         float length;
         std::string material;
         int age;
+
+        FIXME: nested types need 3 member functions in addition to 5 properties
     };
 };
 
@@ -117,7 +120,8 @@ struct TVStation
     std::string getFeedback(int date, std::string feedBack);
 };
 
-TVStation::TVStation() : tvStationName("Nickelodeon"), satelliteRange(180.0f) {
+TVStation::TVStation() : tvStationName("Nickelodeon"), satelliteRange(180.0f) 
+{
     std::cout << "construct TV station" << std::endl;
 } 
 
@@ -268,26 +272,109 @@ void MediaHouse::shutDownItem(std::string item)
 //#include <iostream>
 int main()
 {
+    FIXME: implement instruction 6. 
+
+
+    std::cout << std::endl;
     Guitar guitar;
     Guitar::String string;
+    guitar.reStringGuitar(2);
+    guitar.vibrate(string);
+    guitar.amplify(true, 10);
+    guitar.electricity(50);
+    std::cout << "Is this a 6 stringed guitar? " << (guitar.numberOfStrings == 6 ? "Yes" : "No") << "\n";
+    string.stringAgeUntilBreakdown(8);
+    string.breakDown(200,0.1f);
+    string.oxide(6);
+    string.kill(5,5.5f);
+    std::cout << "Is the string short ? " << (string.length <= 6 ? "Yes" : "No") << "\n";
+    std::cout << std::endl;
+
+    VendingMashine vMachine;
+    vMachine.purchaseWithFiftyCents(0.5f,15);
+    vMachine.chargeCustomer(true, 5.5f);
+    vMachine.feedCustomer(2);
+    vMachine.coolDownMashine(25, 200);
+    std::cout << "Do we need to refill drinks? " << (vMachine.amountOfCandy > vMachine.amountOfDrinks ? "Yes" : "No") << "\n";
+    std::cout << std::endl;
+
+    Phone phone;
+    phone.generateNewSerialNumbers(10,10);
+    phone.receiveCall(false);
+    phone.receiveText(true, "this is a text");
+    phone.makeNoise(2,10);
+    std::cout << "This phone has "<< phone.numberOfSpeaker << " speakers" << "\n";
     std::cout << std::endl;
 
     TVStation tvStation;
     TVStation::Studio studio;
+    std::cout << "Moving the satellite dish "<< "\n";
+    tvStation.changeSatelliteRange(10.5f, true);
+    tvStation.broadcastChannel("CNN");
+    tvStation.produceVideo(studio);
+    tvStation.getFeedback(10,"Nice show");
+    std::cout << "Station has "<< tvStation.numberOfCameras << " cameras" << "\n";
+    std::cout << "Distributing lightbulbs" << std::endl;
+    studio.distributeLamps(10);
+    studio.transmitVideo(true);
+    studio.transmitAudio(true);
+    studio.getOnAirStatus(false);
+    std::cout << "Enough cameras in the newsroom? " << (studio.cameras > 0 && studio.isNewsStudio ? "Yes" : "No") << "\n";
     std::cout << std::endl;
 
-    VendingMashine vMachine;
+    Engine engine;
+    std::cout << "Filling up the tank" << std::endl;
+    engine.fillTank(1000.0f);
+    engine.createMotion(20.0f);
+    engine.convertEnergy(30.2f, 20.9f);
+    engine.produceHeat(true);
+    std::cout << "Engine has "<< engine.cylinders << " cylinders" << "\n";
     std::cout << std::endl;
 
-    Shop shop;
-    shop.sellParts(2);
-    shop.repairedItem("Cooling system");
+    Wings wings;
+    std::cout << "demounting panels" << std::endl;
+    wings.demountPanels(3);
+    wings.foldPanels(5);
+    wings.holdPlaneUp(7);
+    wings.holdTheEngines(100);
+    std::cout << "We are flying with " << wings.tagText << "\n";
     std::cout << std::endl;
 
-    MediaHouse mediahouse;
-    mediahouse.cleanArea();
-    mediahouse.shutDownItem("Vendingmashine");
+    Wheels wheels;
+    std::cout << "Filling up with air" << std::endl;
+    wheels.fillAir(1000.000, 10000);
+    wheels.startRolling(true, 100.9f);
+    wheels.balancePlane(10.0f);
+    wheels.turnTheWheel("left");
+    std::cout << "We are rolling with "<< wheels.manufactor << "\n";
     std::cout << std::endl;
+
+    Seats seats;
+    std::cout << "Adding seats" << std::endl;
+    seats.addSeats(5);
+    seats.carryPassangers(300,2000);
+    seats.foldBack(150);
+    seats.store(10);
+    std::cout << "Seat color "<< seats.seatColor << "\n";
+    std::cout << std::endl;
+
+    Brakes brakes;
+    std::cout << "adding pads to the brake" << std::endl;
+    brakes.addPadsToBrake(2, 5);
+    brakes.showWear("new");
+    brakes.stop(10.0f);
+    brakes.decelerate(10.0f);
+    std::cout << "Wear indicator status: "<< brakes.wearIndicator << "\n";
+    std::cout << std::endl;
+
+    Airplane airplane;
+    std::cout << "Starting to accelerate pistons" << std::endl;
+    airplane.acceleratePiston(90, 100);
+    airplane.fly("London", 1000);
+    airplane.driveOnGround(true);
+    airplane.brake(false);
+    std::cout << (airplane.seats.lifeWest && airplane.wings.lampColor == "green" ? "Safe to fly" : "Not safe to fly") << "\n";
+    
 
     std::cout << "good to go!" << std::endl;
 }
