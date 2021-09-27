@@ -62,8 +62,16 @@ struct Guitar
         std::string material;
         int age;
 
-        FIXME: nested types need 3 member functions in addition to 5 properties
+        void stringAgeUntilBreakdown(int ageLimit);
+        void breakDown(float pressure, float thickness);
+        void oxide(int age);
+        void kill(int sharpness, float length);
     };
+
+    void reStringGuitar(int startingVal);
+    void vibrate(String string);
+    void amplify(bool guitarPluggedIn, int howLoud);
+    float electricity(float time);  
 };
 
 Guitar::Guitar() : logoName("Gibson"), color("Black"), tuningSystem(true) 
@@ -83,8 +91,82 @@ Guitar::String::String() : length (100.0f), age (12)
 
 Guitar::String::~String()
 {
-    std::cout << "deconstruct String" << std::endl; 
+   std::cout << "deconstruct String" << std::endl; 
 }
+
+void Guitar::String::stringAgeUntilBreakdown(int ageLimit)
+{   
+    int newString = 0;
+    while(newString < ageLimit)
+    {   
+        ++ newString;
+        std::cout << "String age is increasing " << newString << std::endl;
+    }
+    std::cout << "String is too old " << std::endl;
+}
+
+void Guitar::String::breakDown(float pressure, float thickness)
+{
+    if(pressure > 100 && thickness < 0.9f)
+    {
+        std::cout << "High pressure on string, it is breaking one of the " << age << " year old strings" << std::endl;
+    }
+}
+
+void Guitar::String::oxide(int ageMonths)
+{
+    if(ageMonths > 10)
+    {
+        std::cout << winding << " string is starting to oxidize" << std::endl;
+    }
+}
+
+void Guitar::String::kill(int sharpness, float lengthCm)
+{
+    if(sharpness > 10 && lengthCm > 100)
+    {
+        std::cout << "string could be dangerous" << std::endl;
+    }
+}
+
+void Guitar::reStringGuitar(int startingVal)
+{
+    for(int i = startingVal; i < numberOfStrings; ++ i)
+    {
+        std::cout << "Restringing the " << i + 1 << "th string" << std::endl;
+    }
+
+}
+void Guitar::vibrate(String string)
+{
+    if(string.length > 0.1f)
+    {
+        std::cout << "guitar is vibrating when strumming the "<< numberOfStrings << " strings." << std::endl;
+    }
+}
+
+void Guitar::amplify(bool guitarPluggedIn, int howLoud)
+{
+    
+    if(guitarPluggedIn && howLoud > 10)
+    {
+        std::cout << howLoud << std::endl;
+    }
+    else
+    {
+        std::cout << logoName << "Guitar is not plugged in, mute amp" << std::endl;
+    }
+}
+
+float Guitar::electricity(float time)
+{
+    if (time > 0)
+    {
+        return time; 
+    }
+    return 0;
+}
+
 /*
  copied UDT 2:
  */
@@ -139,6 +221,116 @@ TVStation::Studio::~Studio()
 {
     std::cout << "deconstruct Studio" << std::endl;
 }
+
+void TVStation::Studio::distributeLamps(int lampsPerRoom)
+{
+    int totalNumbOfRooms = 10;
+    int roomNumber = 1;
+    while(roomNumber < totalNumbOfRooms)
+    {
+       ++ roomNumber; 
+       lightbulbs -= lampsPerRoom; 
+       std::cout << "Amount of lightbulbs left: " << lightbulbs << std::endl;
+    }  
+    std::cout << "Amount of lightbulbs left: " << lightbulbs << std::endl;
+}
+
+void TVStation::Studio::transmitVideo(bool cameraIsOn)
+{
+    if(cameraIsOn)
+    {
+        std::cout << "transmitting video, we are on air: " << isOnAir << std::endl;
+    }
+    else
+    {
+        std::cout << "stop transmitting video" << std::endl;
+    }
+
+}
+
+void TVStation::Studio::transmitAudio(bool microphone)
+{
+    if(microphone)
+    {
+        std::cout << "transmitting audio" << std::endl;
+    }
+    else
+    {
+        std::cout << "stop transmitting audio" << std::endl;
+    }
+
+}
+ bool TVStation::Studio::getOnAirStatus(bool isCameraOn)
+ {
+    isOnAir = isCameraOn;
+    return isOnAir;
+ }
+
+void TVStation::changeSatelliteRange(float stepSize, bool wider)
+{
+    for(int i = 0; i < 10; ++ i) 
+    {
+        if(wider)
+        {
+            satelliteRange += stepSize;
+        }
+        else
+        {
+            satelliteRange -= stepSize;
+        }
+        std::cout << satelliteRange << std::endl;
+    }
+
+}
+
+void TVStation::broadcastChannel(std::string channel)
+{
+    if(channel == "CNN")
+    {
+        std::cout << channel << std::endl;
+    }
+    else
+    {
+        std::cout << tvStationName << std::endl;
+    }
+}
+
+ void TVStation::produceVideo(Studio studio)
+ {
+     if(studio.cameras > 0)
+     {
+         std::cout << numberOfEmployees << " employees are producing video" << std::endl;
+     }
+     else
+     {
+         std::cout << "get cameras" << std::endl;
+     }
+ }
+ 
+std::string TVStation::getFeedback(int date, std::string feedBack)
+{  
+    if(date > 0)
+    {
+        return feedBack;
+    }
+    return "";
+}
+
+struct Engine 
+{
+    Engine();
+    float fuelIntake = 10000.0f;
+    int cylinders = 12;
+    int compressors = 5;
+    bool oilIndicator;
+    int pistonSpeed;
+
+    void fillTank(float loadsOfFuel);
+    void createMotion(float speed);
+    void convertEnergy(float time, float duration);
+    void produceHeat(bool oilIndicator);
+
+};
 /*
  copied UDT 3:
  */
@@ -167,6 +359,45 @@ VendingMashine::VendingMashine() : insertedCoins(10), coolingSystem(true), itemT
 VendingMashine::~VendingMashine()
 {
     std::cout << "deconstruct VendingMashine" << std::endl;
+}
+
+float VendingMashine::purchaseWithFiftyCents(float coinValue, int itemPrice)
+{
+    while(insertedCoins < itemPrice)
+    {           
+        insertedCoins += coinValue;
+        std::cout << "Inserting cash: " << insertedCoins << std::endl;
+    }
+    std::cout << "Item price reached" << std::endl;
+    return insertedCoins;
+}
+
+float VendingMashine::chargeCustomer(bool creditcard, float itemPrice)
+{
+    if(!creditcard)
+    {
+        return itemPrice - insertedCoins;           
+    }
+    return 0;
+}
+
+void VendingMashine::feedCustomer(int amountOfCandyOrdered)
+{
+    if(amountOfCandyOrdered > 0)
+    {
+        std::cout << "Chosen item: " << itemTag << std::endl;
+    }  
+}
+
+void VendingMashine::coolDownMashine(int temperature, int duration)
+{
+    if(temperature > 30)
+    {
+        for(int i = 0; i < duration; ++ i) 
+        {
+            std::cout << "cooling down the mashine" << std::endl; 
+        }
+    }
 }
 /*
  new UDT 4:
@@ -272,9 +503,7 @@ void MediaHouse::shutDownItem(std::string item)
 //#include <iostream>
 int main()
 {
-    FIXME: implement instruction 6. 
-
-
+    //FIXME: implement instruction 6. 
     std::cout << std::endl;
     Guitar guitar;
     Guitar::String string;
@@ -298,14 +527,6 @@ int main()
     std::cout << "Do we need to refill drinks? " << (vMachine.amountOfCandy > vMachine.amountOfDrinks ? "Yes" : "No") << "\n";
     std::cout << std::endl;
 
-    Phone phone;
-    phone.generateNewSerialNumbers(10,10);
-    phone.receiveCall(false);
-    phone.receiveText(true, "this is a text");
-    phone.makeNoise(2,10);
-    std::cout << "This phone has "<< phone.numberOfSpeaker << " speakers" << "\n";
-    std::cout << std::endl;
-
     TVStation tvStation;
     TVStation::Studio studio;
     std::cout << "Moving the satellite dish "<< "\n";
@@ -322,59 +543,15 @@ int main()
     std::cout << "Enough cameras in the newsroom? " << (studio.cameras > 0 && studio.isNewsStudio ? "Yes" : "No") << "\n";
     std::cout << std::endl;
 
-    Engine engine;
-    std::cout << "Filling up the tank" << std::endl;
-    engine.fillTank(1000.0f);
-    engine.createMotion(20.0f);
-    engine.convertEnergy(30.2f, 20.9f);
-    engine.produceHeat(true);
-    std::cout << "Engine has "<< engine.cylinders << " cylinders" << "\n";
+    Shop shop;
+    shop.sellParts(2);
+    shop.repairedItem("Cooling system");
     std::cout << std::endl;
 
-    Wings wings;
-    std::cout << "demounting panels" << std::endl;
-    wings.demountPanels(3);
-    wings.foldPanels(5);
-    wings.holdPlaneUp(7);
-    wings.holdTheEngines(100);
-    std::cout << "We are flying with " << wings.tagText << "\n";
+    MediaHouse mediahouse;
+    mediahouse.cleanArea();
+    mediahouse.shutDownItem("Vendingmashine");
     std::cout << std::endl;
-
-    Wheels wheels;
-    std::cout << "Filling up with air" << std::endl;
-    wheels.fillAir(1000.000, 10000);
-    wheels.startRolling(true, 100.9f);
-    wheels.balancePlane(10.0f);
-    wheels.turnTheWheel("left");
-    std::cout << "We are rolling with "<< wheels.manufactor << "\n";
-    std::cout << std::endl;
-
-    Seats seats;
-    std::cout << "Adding seats" << std::endl;
-    seats.addSeats(5);
-    seats.carryPassangers(300,2000);
-    seats.foldBack(150);
-    seats.store(10);
-    std::cout << "Seat color "<< seats.seatColor << "\n";
-    std::cout << std::endl;
-
-    Brakes brakes;
-    std::cout << "adding pads to the brake" << std::endl;
-    brakes.addPadsToBrake(2, 5);
-    brakes.showWear("new");
-    brakes.stop(10.0f);
-    brakes.decelerate(10.0f);
-    std::cout << "Wear indicator status: "<< brakes.wearIndicator << "\n";
-    std::cout << std::endl;
-
-    Airplane airplane;
-    std::cout << "Starting to accelerate pistons" << std::endl;
-    airplane.acceleratePiston(90, 100);
-    airplane.fly("London", 1000);
-    airplane.driveOnGround(true);
-    airplane.brake(false);
-    std::cout << (airplane.seats.lifeWest && airplane.wings.lampColor == "green" ? "Safe to fly" : "Not safe to fly") << "\n";
     
-
     std::cout << "good to go!" << std::endl;
 }
