@@ -62,16 +62,16 @@ struct Guitar
         std::string material;
         int age;
 
-        void stringAgeUntilBreakdown(int ageLimit);
-        void breakDown(float pressure, float thickness);
-        void oxide(int age);
+        void calculateGuitarStringAgeBeforeBreakingDown(int ageLimit);
+        void breakDownGuitarString(float pressure, float thickness);
+        void oxidizeGuitarString(int age);
         void kill(int sharpness, float length);
     };
 
     void reStringGuitar(int startingVal);
-    void vibrate(String string);
-    void amplify(bool guitarPluggedIn, int howLoud);
-    float electricity(float time);  
+    void vibrateGuitarString(String string);
+    void amplifyGuitar(bool guitarPluggedIn, int howLoud);
+    float calculateElectricityConsumtion(float time);  
 };
 
 Guitar::Guitar() : logoName("Gibson"), color("Black"), tuningSystem(true) 
@@ -94,7 +94,7 @@ Guitar::String::~String()
    std::cout << "deconstruct String" << std::endl; 
 }
 
-void Guitar::String::stringAgeUntilBreakdown(int ageLimit)
+void Guitar::String::calculateGuitarStringAgeBeforeBreakingDown(int ageLimit)
 {   
     int newString = 0;
     while(newString < ageLimit)
@@ -105,7 +105,7 @@ void Guitar::String::stringAgeUntilBreakdown(int ageLimit)
     std::cout << "String is too old " << std::endl;
 }
 
-void Guitar::String::breakDown(float pressure, float thickness)
+void Guitar::String::breakDownGuitarString(float pressure, float thickness)
 {
     if(pressure > 100 && thickness < 0.9f)
     {
@@ -113,7 +113,7 @@ void Guitar::String::breakDown(float pressure, float thickness)
     }
 }
 
-void Guitar::String::oxide(int ageMonths)
+void Guitar::String::oxidizeGuitarString(int ageMonths)
 {
     if(ageMonths > 10)
     {
@@ -137,7 +137,7 @@ void Guitar::reStringGuitar(int startingVal)
     }
 
 }
-void Guitar::vibrate(String string)
+void Guitar::vibrateGuitarString(String string)
 {
     if(string.length > 0.1f)
     {
@@ -145,7 +145,7 @@ void Guitar::vibrate(String string)
     }
 }
 
-void Guitar::amplify(bool guitarPluggedIn, int howLoud)
+void Guitar::amplifyGuitar(bool guitarPluggedIn, int howLoud)
 {
     
     if(guitarPluggedIn && howLoud > 10)
@@ -158,7 +158,7 @@ void Guitar::amplify(bool guitarPluggedIn, int howLoud)
     }
 }
 
-float Guitar::electricity(float time)
+float Guitar::calculateElectricityConsumtion(float time)
 {
     if (time > 0)
     {
@@ -412,8 +412,8 @@ struct Shop
     TVStation tvstation;
     VendingMashine vendingMashine;
 
-    void sellParts(int noOfItems);
-    int repairedItem(std::string itemName);
+    void sellSparePartsFromShopItems(int noOfItems);
+    int repairItemFromShop(std::string itemName);
 };
 
 Shop::Shop()
@@ -426,12 +426,12 @@ Shop::~Shop()
     std::cout << "deconstruct shop, guitar pickups available: " << guitar.numberOfPickups << std::endl;
 }
 
-void Shop::sellParts(int noOfItems)
+void Shop::sellSparePartsFromShopItems(int noOfItems)
 {
     guitar.numberOfPickups -= noOfItems;
 }
 
-int Shop::repairedItem(std::string itemName)
+int Shop::repairItemFromShop(std::string itemName)
 {
     if (vendingMashine.coolingSystem)
     {
@@ -481,10 +481,8 @@ void MediaHouse::shutDownItem(std::string item)
     else if (item == "TVstation")
     {
         std::cout << "shutting down TV station" << std::endl;
-        tvstation.numberOfEmployees=0;
-    }
-    
-     
+        tvstation.numberOfEmployees = 0;
+    }    
 }
 /*
  MAKE SURE YOU ARE NOT ON THE MASTER BRANCH
@@ -508,13 +506,13 @@ int main()
     Guitar guitar;
     Guitar::String string;
     guitar.reStringGuitar(2);
-    guitar.vibrate(string);
-    guitar.amplify(true, 10);
-    guitar.electricity(50);
+    guitar.vibrateGuitarString(string);
+    guitar.amplifyGuitar(true, 10);
+    guitar.calculateElectricityConsumtion(50);
     std::cout << "Is this a 6 stringed guitar? " << (guitar.numberOfStrings == 6 ? "Yes" : "No") << "\n";
-    string.stringAgeUntilBreakdown(8);
-    string.breakDown(200,0.1f);
-    string.oxide(6);
+    string.calculateGuitarStringAgeBeforeBreakingDown(8);
+    string.breakDownGuitarString(200,0.1f);
+    string.oxidizeGuitarString(6);
     string.kill(5,5.5f);
     std::cout << "Is the string short ? " << (string.length <= 6 ? "Yes" : "No") << "\n";
     std::cout << std::endl;
@@ -544,8 +542,8 @@ int main()
     std::cout << std::endl;
 
     Shop shop;
-    shop.sellParts(2);
-    shop.repairedItem("Cooling system");
+    shop.sellSparePartsFromShopItems(2);
+    shop.repairItemFromShop("Cooling system");
     std::cout << std::endl;
 
     MediaHouse mediahouse;
