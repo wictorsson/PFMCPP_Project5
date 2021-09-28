@@ -505,7 +505,7 @@ struct MediaHouse
     MediaHouse();
     ~MediaHouse();
     TVStation tvstation;
-    VendingMachine VendingMachine;
+    VendingMachine vendingMachine;
 
     void cleanArea();
     void shutDownItem(std::string item);
@@ -524,7 +524,7 @@ MediaHouse::~MediaHouse()
 
 void MediaHouse::thisAmountOfDrinks()
 {
-    std::cout << "Get amount of drinks in mediahouse: " << this->VendingMachine.amountOfDrinks << std::endl;
+    std::cout << "Get amount of drinks in mediahouse: " << this->vendingMachine.amountOfDrinks << std::endl;
 }
 
 void MediaHouse::cleanArea()
@@ -537,8 +537,8 @@ void MediaHouse::shutDownItem(std::string item)
     if (item == "VendingMachine")
     {
         std::cout << "shutting down VendingMachine" << std::endl;
-        VendingMachine.amountOfCandy = 0;
-        VendingMachine.amountOfDrinks = 0;
+        vendingMachine.amountOfCandy = 0;
+        vendingMachine.amountOfDrinks = 0;
     } 
     else if (item == "TVstation")
     {
@@ -581,6 +581,16 @@ int main()
     string.checkThisStringLength();
     std::cout << std::endl;
 
+    VendingMachine vMachine;
+    vMachine.purchaseWithFiftyCents(0.5f,15);
+    vMachine.chargeCustomer(true, 5.5f);
+    vMachine.feedCustomer(2);
+    vMachine.coolDownMashine(25, 200);
+    std::cout << "Do we need to refill drinks? " << (vMachine.amountOfCandy > 
+    vMachine.amountOfDrinks ? "Yes" : "No") << "\n";
+    vMachine.checkThisCandyDrinksRatio();
+    std::cout << std::endl;
+    
     TVStation tvStation;
     TVStation::Studio studio;
     std::cout << "Moving the satellite dish "<< "\n";
@@ -597,16 +607,6 @@ int main()
     studio.getOnAirStatus(false);
     std::cout << "Enough cameras in the newsroom? " << (studio.cameras > 0 && studio.isNewsStudio ? "Yes" : "No") << "\n";
     studio.countCamerasInThisStudio();
-    std::cout << std::endl;
-
-    VendingMachine vMachine;
-    vMachine.purchaseWithFiftyCents(0.5f,15);
-    vMachine.chargeCustomer(true, 5.5f);
-    vMachine.feedCustomer(2);
-    vMachine.coolDownMashine(25, 200);
-    std::cout << "Do we need to refill drinks? " << (vMachine.amountOfCandy > 
-    vMachine.amountOfDrinks ? "Yes" : "No") << "\n";
-    vMachine.checkThisCandyDrinksRatio();
     std::cout << std::endl;
 
     Shop shop;
