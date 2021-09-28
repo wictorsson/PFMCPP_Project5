@@ -41,7 +41,7 @@ namespace Example
         void memberFunc() 
         { 
             // 2b) explicitly using 'this' inside this member function.
-            std::cout << "MyFoo returnValue(): " << this->returnValue() << " and MyFoo memberVariable: " << this->memberVariable << std::endl; 
+            std::cout << "MyFoo returnValue(): " << this->returnValue() << " and MyFoo memberVariable: " << this->memberVariable  << std::endl; 
         }  
         
         int returnValue() { return 3; }
@@ -97,12 +97,15 @@ struct Guitar
         void breakDownGuitarString(float pressure, float thickness);
         void oxidizeGuitarString(int age);
         void kill(int sharpness, float length);
+        void checkThisStringLength();
+        
     };
 
     void reStringGuitar(int startingVal);
     void vibrateGuitarString(String string);
     void amplifyGuitar(bool guitarPluggedIn, int howLoud);
-    float calculateElectricityConsumtion(float time);  
+    float calculateElectricityConsumtion(float time); 
+    void checkThisNumberOfStrings();       
 };
 
 Guitar::Guitar() : logoName("Gibson"), color("Black"), tuningSystem(true) 
@@ -123,6 +126,16 @@ Guitar::String::String() : length (100.0f), age (12)
 Guitar::String::~String()
 {
    std::cout << "deconstruct String" << std::endl; 
+}
+
+void Guitar::checkThisNumberOfStrings()
+{
+    std::cout << "Is this a 6 stringed guitar? " << (this->numberOfStrings == 6 ? "Yes" : "No") << "\n";
+}
+
+void Guitar::String::checkThisStringLength()
+{
+    std::cout << "Is the string short ? " << (this->length <= 6.0f ? "Yes" : "No") << "\n";
 }
 
 void Guitar::String::calculateGuitarStringAgeBeforeBreakingDown(int ageLimit)
@@ -225,12 +238,14 @@ struct TVStation
         void transmitVideo(bool cameraIsOn);
         void transmitAudio(bool microphone);
         bool getOnAirStatus(bool isCameraOn);
+        void countCamerasInThisStudio();  
     };
 
     void changeSatelliteRange(float steps, bool wider);
     void broadcastChannel(std::string channel);
     void produceVideo(Studio studio);
     std::string getFeedback(int date, std::string feedBack);
+    void countThisStationsCameras();   
 };
 
 TVStation::TVStation() : tvStationName("Nickelodeon"), satelliteRange(180.0f) 
@@ -240,7 +255,7 @@ TVStation::TVStation() : tvStationName("Nickelodeon"), satelliteRange(180.0f)
 
 TVStation::~TVStation() 
 {
-std::cout << "deconstruct TVStation" << std::endl;
+    std::cout << "deconstruct TVStation" << std::endl;
 }
 
 TVStation::Studio::Studio() : isOnAir(false), cameras(5), size(100) 
@@ -252,6 +267,17 @@ TVStation::Studio::~Studio()
 {
     std::cout << "deconstruct Studio" << std::endl;
 }
+
+void TVStation::countThisStationsCameras()
+{
+    std::cout << "Station has "<< this->numberOfCameras << " cameras" << "\n";  
+}
+
+void TVStation::Studio::countCamerasInThisStudio()
+{
+    std::cout << "Enough cameras in the newsroom? " << (this->cameras > 0 && this->isNewsStudio ? "Yes" : "No") << "\n";
+}
+
 
 void TVStation::Studio::distributeLamps(int lampsPerRoom)
 {
@@ -347,28 +373,13 @@ std::string TVStation::getFeedback(int date, std::string feedBack)
     return "";
 }
 
-struct Engine 
-{
-    Engine();
-    float fuelIntake = 10000.0f;
-    int cylinders = 12;
-    int compressors = 5;
-    bool oilIndicator;
-    int pistonSpeed;
-
-    void fillTank(float loadsOfFuel);
-    void createMotion(float speed);
-    void convertEnergy(float time, float duration);
-    void produceHeat(bool oilIndicator);
-
-};
 /*
  copied UDT 3:
  */
-struct VendingMashine
+struct VendingMachine
 {
-    VendingMashine();
-    ~VendingMashine();
+    VendingMachine();
+    ~VendingMachine();
     
     int amountOfCandy = 50;
     int amountOfDrinks = 50;
@@ -380,19 +391,25 @@ struct VendingMashine
     float chargeCustomer(bool creditcard, float itemPrice);
     void feedCustomer(int amountOfCandy);
     void coolDownMashine(int temperature, int duration);
+    void checkThisCandyDrinksRatio();
 };
 
-VendingMashine::VendingMashine() : insertedCoins(10), coolingSystem(true), itemTag("Orego")
+VendingMachine::VendingMachine() : insertedCoins(10), coolingSystem(true), itemTag("Orego")
 {
-    std::cout << "construct vendingmashine" << std::endl;
+    std::cout << "construct VendingMachine" << std::endl;
 } 
 
-VendingMashine::~VendingMashine()
+VendingMachine::~VendingMachine()
 {
-    std::cout << "deconstruct VendingMashine" << std::endl;
+    std::cout << "deconstruct VendingMachine" << std::endl;
 }
 
-float VendingMashine::purchaseWithFiftyCents(float coinValue, int itemPrice)
+void VendingMachine::checkThisCandyDrinksRatio()
+{
+    std::cout << "Do we need to refill drinks? " << (this->amountOfCandy > 
+    this->amountOfDrinks ? "Yes" : "No") << "\n";
+}
+float VendingMachine::purchaseWithFiftyCents(float coinValue, int itemPrice)
 {
     while(insertedCoins < itemPrice)
     {           
@@ -403,7 +420,7 @@ float VendingMashine::purchaseWithFiftyCents(float coinValue, int itemPrice)
     return insertedCoins;
 }
 
-float VendingMashine::chargeCustomer(bool creditcard, float itemPrice)
+float VendingMachine::chargeCustomer(bool creditcard, float itemPrice)
 {
     if(!creditcard)
     {
@@ -412,7 +429,7 @@ float VendingMashine::chargeCustomer(bool creditcard, float itemPrice)
     return 0;
 }
 
-void VendingMashine::feedCustomer(int amountOfCandyOrdered)
+void VendingMachine::feedCustomer(int amountOfCandyOrdered)
 {
     if(amountOfCandyOrdered > 0)
     {
@@ -420,7 +437,7 @@ void VendingMashine::feedCustomer(int amountOfCandyOrdered)
     }  
 }
 
-void VendingMashine::coolDownMashine(int temperature, int duration)
+void VendingMachine::coolDownMashine(int temperature, int duration)
 {
     if(temperature > 30)
     {
@@ -441,10 +458,11 @@ struct Shop
     Guitar guitar;
     Guitar::String string;
     TVStation tvstation;
-    VendingMashine vendingMashine;
+    VendingMachine VendingMachine;
 
     void sellSparePartsFromShopItems(int noOfItems);
     int repairItemFromShop(std::string itemName);
+    void sumItemsForSale();
 };
 
 Shop::Shop()
@@ -457,6 +475,13 @@ Shop::~Shop()
     std::cout << "deconstruct shop, guitar pickups available: " << guitar.numberOfPickups << std::endl;
 }
 
+void Shop::sumItemsForSale()
+{
+    std::cout << "The shop is selling this many items: " << (this->guitar.numberOfPickups + this->guitar.numberOfStrings + this->tvstation.numberOfCameras) << std::endl;   
+    
+     
+}
+
 void Shop::sellSparePartsFromShopItems(int noOfItems)
 {
     guitar.numberOfPickups -= noOfItems;
@@ -464,7 +489,7 @@ void Shop::sellSparePartsFromShopItems(int noOfItems)
 
 int Shop::repairItemFromShop(std::string itemName)
 {
-    if (vendingMashine.coolingSystem)
+    if (VendingMachine.coolingSystem)
     {
         std::cout << itemName << " has been repaired" << std::endl;
         return 1;
@@ -480,10 +505,11 @@ struct MediaHouse
     MediaHouse();
     ~MediaHouse();
     TVStation tvstation;
-    VendingMashine vendingMashine;
+    VendingMachine VendingMachine;
 
     void cleanArea();
     void shutDownItem(std::string item);
+    void thisAmountOfDrinks();
 };
 
 MediaHouse::MediaHouse()
@@ -496,6 +522,11 @@ MediaHouse::~MediaHouse()
     std::cout << "deconstruct MediaHouse" << std::endl;
 }
 
+void MediaHouse::thisAmountOfDrinks()
+{
+    std::cout << "Get amount of drinks in mediahouse: " << this->VendingMachine.amountOfDrinks << std::endl;
+}
+
 void MediaHouse::cleanArea()
 {
     std::cout << "Cleaning TV station: " << tvstation.tvStationName << std::endl;
@@ -503,11 +534,11 @@ void MediaHouse::cleanArea()
 
 void MediaHouse::shutDownItem(std::string item)
 {
-    if (item == "Vendingmashine")
+    if (item == "VendingMachine")
     {
-        std::cout << "shutting down vendingmashine" << std::endl;
-        vendingMashine.amountOfCandy = 0;
-        vendingMashine.amountOfDrinks = 0;
+        std::cout << "shutting down VendingMachine" << std::endl;
+        VendingMachine.amountOfCandy = 0;
+        VendingMachine.amountOfDrinks = 0;
     } 
     else if (item == "TVstation")
     {
@@ -531,8 +562,7 @@ void MediaHouse::shutDownItem(std::string item)
 
 //#include <iostream>
 int main()
-{
-    //FIXME: implement instruction 6. 
+{ 
     std::cout << std::endl;
     Guitar guitar;
     Guitar::String string;
@@ -541,19 +571,14 @@ int main()
     guitar.amplifyGuitar(true, 10);
     guitar.calculateElectricityConsumtion(50);
     std::cout << "Is this a 6 stringed guitar? " << (guitar.numberOfStrings == 6 ? "Yes" : "No") << "\n";
+    guitar.checkThisNumberOfStrings();
+
     string.calculateGuitarStringAgeBeforeBreakingDown(8);
     string.breakDownGuitarString(200,0.1f);
     string.oxidizeGuitarString(6);
     string.kill(5,5.5f);
     std::cout << "Is the string short ? " << (string.length <= 6 ? "Yes" : "No") << "\n";
-    std::cout << std::endl;
-
-    VendingMashine vMachine;
-    vMachine.purchaseWithFiftyCents(0.5f,15);
-    vMachine.chargeCustomer(true, 5.5f);
-    vMachine.feedCustomer(2);
-    vMachine.coolDownMashine(25, 200);
-    std::cout << "Do we need to refill drinks? " << (vMachine.amountOfCandy > vMachine.amountOfDrinks ? "Yes" : "No") << "\n";
+    string.checkThisStringLength();
     std::cout << std::endl;
 
     TVStation tvStation;
@@ -564,23 +589,39 @@ int main()
     tvStation.produceVideo(studio);
     tvStation.getFeedback(10,"Nice show");
     std::cout << "Station has "<< tvStation.numberOfCameras << " cameras" << "\n";
+    tvStation.countThisStationsCameras();
     std::cout << "Distributing lightbulbs" << std::endl;
     studio.distributeLamps(10);
     studio.transmitVideo(true);
     studio.transmitAudio(true);
     studio.getOnAirStatus(false);
     std::cout << "Enough cameras in the newsroom? " << (studio.cameras > 0 && studio.isNewsStudio ? "Yes" : "No") << "\n";
+    studio.countCamerasInThisStudio();
+    std::cout << std::endl;
+
+    VendingMachine vMachine;
+    vMachine.purchaseWithFiftyCents(0.5f,15);
+    vMachine.chargeCustomer(true, 5.5f);
+    vMachine.feedCustomer(2);
+    vMachine.coolDownMashine(25, 200);
+    std::cout << "Do we need to refill drinks? " << (vMachine.amountOfCandy > 
+    vMachine.amountOfDrinks ? "Yes" : "No") << "\n";
+    vMachine.checkThisCandyDrinksRatio();
     std::cout << std::endl;
 
     Shop shop;
     shop.sellSparePartsFromShopItems(2);
+    std::cout << "The shop is selling this many items: " << guitar.numberOfPickups + guitar.numberOfStrings + tvStation.numberOfCameras << std::endl;
+    shop.sumItemsForSale();
     shop.repairItemFromShop("Cooling system");
     std::cout << std::endl;
 
     MediaHouse mediahouse;
     mediahouse.cleanArea();
-    mediahouse.shutDownItem("Vendingmashine");
+    mediahouse.shutDownItem("VendingMachine");
+
     std::cout << std::endl;
-    
+    std::cout << "Get amount of drinks in mediahouse: " << vMachine.amountOfDrinks << std::endl;
+    mediahouse.thisAmountOfDrinks();
     std::cout << "good to go!" << std::endl;
 }
