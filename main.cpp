@@ -458,7 +458,7 @@ struct Shop
     Guitar guitar;
     Guitar::String string;
     TVStation tvstation;
-    VendingMachine VendingMachine;
+    VendingMachine vendingMachine;
 
     void sellSparePartsFromShopItems(int noOfItems);
     int repairItemFromShop(std::string itemName);
@@ -489,7 +489,7 @@ void Shop::sellSparePartsFromShopItems(int noOfItems)
 
 int Shop::repairItemFromShop(std::string itemName)
 {
-    if (VendingMachine.coolingSystem)
+    if (vendingMachine.coolingSystem)
     {
         std::cout << itemName << " has been repaired" << std::endl;
         return 1;
