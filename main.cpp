@@ -20,6 +20,7 @@ Create a branch named Part3
     This means if you had something like the following in your main() previously: 
 */
 #if false
+
  Axe axe;
  std::cout << "axe sharpness: " << axe.sharpness << "\n";
  #endif
@@ -54,6 +55,7 @@ You don't have to do this, you can keep your current object name and just change
 
 
 #include <iostream>
+#include "LeakedObjectDetector.h"
 /*
  copied UDT 1:
  */
@@ -84,14 +86,31 @@ struct Guitar
         void oxidizeGuitarString(int age);
         void kill(int sharpness, float length);
         void checkThisStringLength();
+
+        JUCE_LEAK_DETECTOR(String)
         
     };
 
+    String stringNested;
+    
     void reStringGuitar(int startingVal);
     void vibrateGuitarString(String string);
     void amplifyGuitar(bool guitarPluggedIn, int howLoud);
     float calculateElectricityConsumtion(float time); 
-    void checkThisNumberOfStrings();       
+    void checkThisNumberOfStrings(); 
+
+    JUCE_LEAK_DETECTOR(Guitar)
+         
+};
+
+struct GuitarWrapper
+{
+    GuitarWrapper(Guitar* ptr) : pointerToGuitar(ptr){}
+    ~GuitarWrapper()
+    {
+        delete pointerToGuitar;
+    }
+    Guitar* pointerToGuitar = nullptr;
 };
 
 Guitar::Guitar() : logoName("Gibson"), color("Black"), tuningSystem(true) 
@@ -224,14 +243,29 @@ struct TVStation
         void transmitVideo(bool cameraIsOn);
         void transmitAudio(bool microphone);
         bool getOnAirStatus(bool isCameraOn);
-        void countCamerasInThisStudio();  
+        void countCamerasInThisStudio(); 
+
+        JUCE_LEAK_DETECTOR(Studio) 
     };
 
+    Studio studioNested;
     void changeSatelliteRange(float steps, bool wider);
     void broadcastChannel(std::string channel);
     void produceVideo(Studio studio);
     std::string getFeedback(int date, std::string feedBack);
-    void countThisStationsCameras();   
+    void countThisStationsCameras();  
+
+    JUCE_LEAK_DETECTOR(TVStation) 
+};
+
+struct TVStationWrapper
+{
+    TVStationWrapper(TVStation* ptr) : pointerToTVStation(ptr){}
+    ~TVStationWrapper()
+    {
+        delete pointerToTVStation;
+    }
+    TVStation* pointerToTVStation = nullptr;
 };
 
 TVStation::TVStation() : tvStationName("Nickelodeon"), satelliteRange(180.0f) 
@@ -378,6 +412,18 @@ struct VendingMachine
     void feedCustomer(int amountOfCandy);
     void coolDownMashine(int temperature, int duration);
     void checkThisCandyDrinksRatio();
+
+    JUCE_LEAK_DETECTOR(VendingMachine)
+};
+
+struct VendingMachineWrapper
+{
+    VendingMachineWrapper(VendingMachine* ptr) : pointerToVendingMachine(ptr){}
+    ~VendingMachineWrapper()
+    {
+        delete pointerToVendingMachine;
+    }
+    VendingMachine* pointerToVendingMachine = nullptr;
 };
 
 VendingMachine::VendingMachine() : insertedCoins(10), coolingSystem(true), itemTag("Orego")
@@ -449,6 +495,18 @@ struct Shop
     void sellSparePartsFromShopItems(int noOfItems);
     int repairItemFromShop(std::string itemName);
     void sumItemsForSale();
+
+    JUCE_LEAK_DETECTOR(Shop)
+};
+
+struct ShopWrapper 
+{
+    ShopWrapper(Shop* ptr) : pointerToShop(ptr){}
+    ~ShopWrapper()
+    {
+        delete pointerToShop;
+    }
+    Shop* pointerToShop = nullptr;
 };
 
 Shop::Shop()
@@ -496,6 +554,18 @@ struct MediaHouse
     void cleanArea();
     void shutDownItem(std::string item);
     void thisAmountOfDrinks();
+
+    JUCE_LEAK_DETECTOR(MediaHouse)
+};
+
+struct MediaHouseWrapper
+{
+    MediaHouseWrapper(MediaHouse* ptr) : pointerToMediaHouse(ptr){} 
+    ~MediaHouseWrapper()
+    {
+        delete pointerToMediaHouse;
+    }
+    MediaHouse* pointerToMediaHouse = nullptr;
 };
 
 MediaHouse::MediaHouse()
@@ -547,67 +617,67 @@ void MediaHouse::shutDownItem(std::string item)
  */
 
 //#include <iostream>
+
 int main()
 { 
     std::cout << std::endl;
-    Guitar guitar;
-    Guitar::String string;
-    guitar.reStringGuitar(2);
-    guitar.vibrateGuitarString(string);
-    guitar.amplifyGuitar(true, 10);
-    guitar.calculateElectricityConsumtion(50);
-    std::cout << "Is this a 6 stringed guitar? " << (guitar.numberOfStrings == 6 ? "Yes" : "No") << "\n";
-    guitar.checkThisNumberOfStrings();
+    
+    GuitarWrapper guitarWrapper( new Guitar() );
+    std::cout << "Is this a 6 stringed guitar? " << (guitarWrapper.pointerToGuitar->numberOfStrings == 6 ? "Yes" : "No") << "\n";
+    guitarWrapper.pointerToGuitar->reStringGuitar(2);
+    guitarWrapper.pointerToGuitar->vibrateGuitarString(guitarWrapper.pointerToGuitar->stringNested);
+    guitarWrapper.pointerToGuitar->amplifyGuitar(true, 10);
+    guitarWrapper.pointerToGuitar->calculateElectricityConsumtion(50);
+    guitarWrapper.pointerToGuitar->checkThisNumberOfStrings();
 
-    string.calculateGuitarStringAgeBeforeBreakingDown(8);
-    string.breakDownGuitarString(200,0.1f);
-    string.oxidizeGuitarString(6);
-    string.kill(5,5.5f);
-    std::cout << "Is the string short ? " << (string.length <= 6 ? "Yes" : "No") << "\n";
-    string.checkThisStringLength();
+    guitarWrapper.pointerToGuitar->stringNested.calculateGuitarStringAgeBeforeBreakingDown(8);
+    guitarWrapper.pointerToGuitar->stringNested.breakDownGuitarString(200,0.1f);
+    guitarWrapper.pointerToGuitar->stringNested.oxidizeGuitarString(6);
+    guitarWrapper.pointerToGuitar->stringNested.kill(5,5.5f);
+    std::cout << "Is the string short ? " << (guitarWrapper.pointerToGuitar->stringNested.length <= 6 ? "Yes" : "No") << "\n";
+    guitarWrapper.pointerToGuitar->stringNested.checkThisStringLength();
     std::cout << std::endl;
 
-    VendingMachine vMachine;
-    vMachine.purchaseWithFiftyCents(0.5f,15);
-    vMachine.chargeCustomer(true, 5.5f);
-    vMachine.feedCustomer(2);
-    vMachine.coolDownMashine(25, 200);
-    std::cout << "Do we need to refill drinks? " << (vMachine.amountOfCandy > 
-    vMachine.amountOfDrinks ? "Yes" : "No") << "\n";
-    vMachine.checkThisCandyDrinksRatio();
+    VendingMachineWrapper vendingMachineWrapper( new VendingMachine() );
+    vendingMachineWrapper.pointerToVendingMachine->purchaseWithFiftyCents(0.5f,15);
+    vendingMachineWrapper.pointerToVendingMachine->chargeCustomer(true, 5.5f);
+    vendingMachineWrapper.pointerToVendingMachine->feedCustomer(2);
+    vendingMachineWrapper.pointerToVendingMachine->coolDownMashine(25, 200);
+    std::cout << "Do we need to refill drinks? " << (vendingMachineWrapper.pointerToVendingMachine->amountOfCandy > 
+    vendingMachineWrapper.pointerToVendingMachine->amountOfDrinks ? "Yes" : "No") << "\n";
+    vendingMachineWrapper.pointerToVendingMachine->checkThisCandyDrinksRatio();
     std::cout << std::endl;
     
-    TVStation tvStation;
-    TVStation::Studio studio;
+    TVStationWrapper tvStationWrapper((new TVStation)); 
     std::cout << "Moving the satellite dish "<< "\n";
-    tvStation.changeSatelliteRange(10.5f, true);
-    tvStation.broadcastChannel("CNN");
-    tvStation.produceVideo(studio);
-    tvStation.getFeedback(10,"Nice show");
-    std::cout << "Station has "<< tvStation.numberOfCameras << " cameras" << "\n";
-    tvStation.countThisStationsCameras();
+    tvStationWrapper.pointerToTVStation->changeSatelliteRange(10.5f, true);
+    tvStationWrapper.pointerToTVStation->broadcastChannel("CNN");
+    tvStationWrapper.pointerToTVStation->produceVideo(tvStationWrapper.pointerToTVStation->studioNested);
+    tvStationWrapper.pointerToTVStation->getFeedback(10,"Nice show");
+    std::cout << "Station has "<< tvStationWrapper.pointerToTVStation->numberOfCameras << " cameras" << "\n";
+    tvStationWrapper.pointerToTVStation->countThisStationsCameras();
     std::cout << "Distributing lightbulbs" << std::endl;
-    studio.distributeLamps(10);
-    studio.transmitVideo(true);
-    studio.transmitAudio(true);
-    studio.getOnAirStatus(false);
-    std::cout << "Enough cameras in the newsroom? " << (studio.cameras > 0 && studio.isNewsStudio ? "Yes" : "No") << "\n";
-    studio.countCamerasInThisStudio();
+    tvStationWrapper.pointerToTVStation->studioNested.distributeLamps(10);
+    tvStationWrapper.pointerToTVStation->studioNested.transmitVideo(true);
+    tvStationWrapper.pointerToTVStation->studioNested.transmitAudio(true);
+    tvStationWrapper.pointerToTVStation->studioNested.getOnAirStatus(false);
+    std::cout << "Enough cameras in the newsroom? " << (tvStationWrapper.pointerToTVStation->studioNested.cameras > 0 && tvStationWrapper.pointerToTVStation->studioNested.isNewsStudio ? "Yes" : "No") << "\n";
+    tvStationWrapper.pointerToTVStation->studioNested.countCamerasInThisStudio();
     std::cout << std::endl;
 
-    Shop shop;
-    shop.sellSparePartsFromShopItems(2);
-    std::cout << "The shop is selling this many items: " << guitar.numberOfPickups + guitar.numberOfStrings + tvStation.numberOfCameras << std::endl;
-    shop.sumItemsForSale();
-    shop.repairItemFromShop("Cooling system");
+    ShopWrapper shopWrapper((new Shop));
+    shopWrapper.pointerToShop->sellSparePartsFromShopItems(2);
+    std::cout << "The shop is selling this many items: " << guitarWrapper.pointerToGuitar->numberOfPickups + guitarWrapper.pointerToGuitar->numberOfStrings + tvStationWrapper.pointerToTVStation->numberOfCameras << std::endl;
+    shopWrapper.pointerToShop->sumItemsForSale();
+    shopWrapper.pointerToShop->repairItemFromShop("Cooling system");
     std::cout << std::endl;
 
-    MediaHouse mediahouse;
-    mediahouse.cleanArea();
-    mediahouse.shutDownItem("VendingMachine");
+    MediaHouseWrapper mediaHouseWrapper((new MediaHouse));
+    mediaHouseWrapper.pointerToMediaHouse->cleanArea();
+    mediaHouseWrapper.pointerToMediaHouse->shutDownItem("VendingMachine");
 
     std::cout << std::endl;
-    std::cout << "Get amount of drinks in mediahouse: " << vMachine.amountOfDrinks << std::endl;
-    mediahouse.thisAmountOfDrinks();
+    std::cout << "Get amount of drinks in mediahouse: " << vendingMachineWrapper.pointerToVendingMachine->amountOfDrinks << std::endl;
+    mediaHouseWrapper.pointerToMediaHouse->thisAmountOfDrinks();
     std::cout << "good to go!" << std::endl;
 }
