@@ -622,7 +622,7 @@ int main()
 { 
     std::cout << std::endl;
     
-    GuitarWrapper guitarWrapper( new Guitar() );
+    GuitarWrapper guitarWrapper(new Guitar);
     std::cout << "Is this a 6 stringed guitar? " << (guitarWrapper.pointerToGuitar->numberOfStrings == 6 ? "Yes" : "No") << "\n";
     guitarWrapper.pointerToGuitar->reStringGuitar(2);
     guitarWrapper.pointerToGuitar->vibrateGuitarString(guitarWrapper.pointerToGuitar->stringNested);
@@ -648,7 +648,7 @@ int main()
     vendingMachineWrapper.pointerToVendingMachine->checkThisCandyDrinksRatio();
     std::cout << std::endl;
     
-    TVStationWrapper tvStationWrapper((new TVStation)); 
+    TVStationWrapper tvStationWrapper(new TVStation); 
     std::cout << "Moving the satellite dish "<< "\n";
     tvStationWrapper.pointerToTVStation->changeSatelliteRange(10.5f, true);
     tvStationWrapper.pointerToTVStation->broadcastChannel("CNN");
@@ -665,14 +665,14 @@ int main()
     tvStationWrapper.pointerToTVStation->studioNested.countCamerasInThisStudio();
     std::cout << std::endl;
 
-    ShopWrapper shopWrapper((new Shop));
+    ShopWrapper shopWrapper(new Shop);
     shopWrapper.pointerToShop->sellSparePartsFromShopItems(2);
     std::cout << "The shop is selling this many items: " << guitarWrapper.pointerToGuitar->numberOfPickups + guitarWrapper.pointerToGuitar->numberOfStrings + tvStationWrapper.pointerToTVStation->numberOfCameras << std::endl;
     shopWrapper.pointerToShop->sumItemsForSale();
     shopWrapper.pointerToShop->repairItemFromShop("Cooling system");
     std::cout << std::endl;
 
-    MediaHouseWrapper mediaHouseWrapper((new MediaHouse));
+    MediaHouseWrapper mediaHouseWrapper(new MediaHouse);
     mediaHouseWrapper.pointerToMediaHouse->cleanArea();
     mediaHouseWrapper.pointerToMediaHouse->shutDownItem("VendingMachine");
 
