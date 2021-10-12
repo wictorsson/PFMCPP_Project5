@@ -1,57 +1,43 @@
 #pragma once
-#include "Guitar.h"
-#include "TVStation.h"
-#include "VendingMachine.h"
-#include "Shop.h"
-#include "MediaHouse.h"
+
+struct Guitar;
+struct TVStation;
+struct VendingMachine;
+struct Shop;
+struct MediaHouse;
 
 struct GuitarWrapper
 {
-    GuitarWrapper(Guitar* ptr) : pointerToGuitar(ptr){}
-    ~GuitarWrapper()
-    {
-        delete pointerToGuitar;
-    }
+    GuitarWrapper(Guitar* ptr);
+    ~GuitarWrapper(); 
     Guitar* pointerToGuitar = nullptr;
 };
 
 struct TVStationWrapper
 {
-    TVStationWrapper(TVStation* ptr) : pointerToTVStation(ptr){}
-    ~TVStationWrapper()
-    {
-        delete pointerToTVStation;
-    }
+    TVStationWrapper(TVStation* ptr);
+    ~TVStationWrapper();
     TVStation* pointerToTVStation = nullptr;
 };
 
 struct VendingMachineWrapper
 {
-    VendingMachineWrapper(VendingMachine* ptr) : pointerToVendingMachine(ptr){}
-    ~VendingMachineWrapper()
-    {
-        delete pointerToVendingMachine;
-    }
+    VendingMachineWrapper(VendingMachine* ptr);
+    ~VendingMachineWrapper();
     VendingMachine* pointerToVendingMachine = nullptr;
 };
 
 struct ShopWrapper 
 {
-    ShopWrapper(Shop* ptr) : pointerToShop(ptr){}
-    ~ShopWrapper()
-    {
-        delete pointerToShop;
-    }
+    ShopWrapper(Shop* ptr);
+    ~ShopWrapper();
     Shop* pointerToShop = nullptr;
 };
 
 struct MediaHouseWrapper
 {
-    MediaHouseWrapper(MediaHouse* ptr) : pointerToMediaHouse(ptr){} 
-    ~MediaHouseWrapper()
-    {
-        delete pointerToMediaHouse;
-    }
+    MediaHouseWrapper(MediaHouse* ptr);
+    ~MediaHouseWrapper();
     MediaHouse* pointerToMediaHouse = nullptr;
 };
 

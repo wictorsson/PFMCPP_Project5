@@ -37,7 +37,7 @@
 
 
 #include <iostream>
-#include "LeakedObjectDetector.h"
+//#include "LeakedObjectDetector.h"
 /*
  copied UDT 1:
  */

@@ -58,9 +58,9 @@ void TVStation::Studio::transmitVideo(bool cameraIsOn)
 
 }
 
-void TVStation::Studio::transmitAudio(bool microphone)
+void TVStation::Studio::transmitAudio(bool usingMicrophone)
 {
-    if(microphone)
+    if(usingMicrophone)
     {
         std::cout << "transmitting audio" << std::endl;
     }
