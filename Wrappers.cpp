@@ -1,4 +1,3 @@
-#pragma once
 #include "Wrappers.h"
 #include "Guitar.h"
 #include "TVStation.h"
